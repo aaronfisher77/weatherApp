@@ -10,8 +10,9 @@ import Foundation
 import SwiftyJSON
 
 class WeatherData {
+    
+    // Weather App COnditiontions
     enum Conditions: String {
-        
         case clearDay = "clear-day"
         case clearNight = "clear-night"
         case rain = "rain"
@@ -23,6 +24,7 @@ class WeatherData {
         case partlyCloudyDay = "partly-cloudy-day"
         case partlyCloudyNight = "partly-cloudy-night"
         
+        // Icons for each conditions
         var icon: String {
             switch self {
             case .clearDay:
@@ -48,6 +50,8 @@ class WeatherData {
             }
         }
     }
+    
+    // allows for easy key usage
     enum WeatherDataKeys: String {
         case currently = "currently"
         case temperature = "temperature"
@@ -58,6 +62,7 @@ class WeatherData {
         case temperatureLow = "temperatureLow"
     }
     
+    // neccissary variables
     let temperature: Double
     let highTemperature: Double
     let lowTemperature: Double
@@ -72,33 +77,33 @@ class WeatherData {
     }
     
     convenience init?(json: JSON) {
-        guard let temperature = json[WeatherDataKeys.currently.rawValue][WeatherDataKeys.temperature.rawValue].double else {
-            print("Couldn't get temperature")
+        guard let temperature = json[WeatherDataKeys.currently.rawValue][WeatherDataKeys.temperature.rawValue].double else { // creates a temperature variable if the tempeture can be received from the JSON
+            print("Couldn't get temperature") // Error Message
             return nil
         }
         
-        guard let highTemperature = json[WeatherDataKeys.daily.rawValue][WeatherDataKeys.data.rawValue][0][WeatherDataKeys.temperatureHigh.rawValue].double else {
-            print("Couldn't get high temp")
+        guard let highTemperature = json[WeatherDataKeys.daily.rawValue][WeatherDataKeys.data.rawValue][0][WeatherDataKeys.temperatureHigh.rawValue].double else {// creates a temperature variable if the tempeture can be received from the JSON
+            print("Couldn't get high temp") // Error Message
             return nil
         }
         
-        guard let lowTemperature = json[WeatherDataKeys.daily.rawValue][WeatherDataKeys.data.rawValue][0][WeatherDataKeys.temperatureLow.rawValue].double else {
-            print("Couldn't get low temp")
+        guard let lowTemperature = json[WeatherDataKeys.daily.rawValue][WeatherDataKeys.data.rawValue][0][WeatherDataKeys.temperatureLow.rawValue].double else {// creates a low temperature variable if the temperature can be received from the JSON
+            print("Couldn't get low temp") // Error Message
             return nil
         }
         
-        guard let conditionString = json[WeatherDataKeys.currently.rawValue][WeatherDataKeys.icon.rawValue].string else {
-            print("Couldn't get condition")
+        guard let conditionString = json[WeatherDataKeys.currently.rawValue][WeatherDataKeys.icon.rawValue].string else {// creates a condition string variable if the condition string can be received from the JSON
+            print("Couldn't get condition") // Error Message
             return nil
         }
         
         print(conditionString)
         
-        guard let condition = Conditions(rawValue: conditionString) else {
-            print("Couldn't init condition")
+        guard let condition = Conditions(rawValue: conditionString) else {// creates a condition variable if the condition can be received from the JSON
+            print("Couldn't init condition") // Error Message
             return nil
         }
         
-        self.init(temperature: temperature, highTemperature: highTemperature, lowTemperature: lowTemperature, condition: condition)
+        self.init(temperature: temperature, highTemperature: highTemperature, lowTemperature: lowTemperature, condition: condition) // Initializer 
     }
 }
